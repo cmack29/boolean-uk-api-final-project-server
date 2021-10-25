@@ -19,3 +19,21 @@ model Profile {
   firstName  String
   lastName   String
 }
+
+model Recipe {
+  id         Int         @id @default(autoincrement())
+  title      String
+  description String  
+  prepTime   Int
+  cookingTime Int
+}
+
+model Ingredient {
+  id         Int         @id @default(autoincrement())
+  name       String
+}
+
+model Category {
+  id         Int         @id @default(autoincrement())
+  name       String
+}

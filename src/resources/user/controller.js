@@ -1,31 +1,30 @@
-const { prisma } = require("../utils/database")
+const prisma = require("../../utils/database")
 
 const createUserProfile = async (req, res) => {
-    try{
+    console.log(req.body)
+    try {
         const newUser = await prisma.user.create({
             data: {
                 userName: req.body.userName,
-                email: req.body.email
-            },
-            profile: {
-                create: [
-                    {
-                        ...req.body.profile
+                email: req.body.email,
+                profile: {
+                    create: {
+                        firstName: req.body.profile.firstName,
+                        lastName: req.body.profile.lastName,
                     }
-                ]
+                },
             },
             include: {
-                profile: true
+                profile: true,
             }
         })
         res.json({ data: newUser })
         console.log(newUser)
     }
-    catch(error) {
+    catch (error) {
         console.error(error)
         res.status(500).json({ error })
     }
 }
 
-
-module.exports = {createUserProfile}
+module.exports = { createUserProfile }

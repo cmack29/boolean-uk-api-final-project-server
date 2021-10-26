@@ -8,6 +8,7 @@ const app = express();
 
 /* SETUP MIDDLEWARE */
 const recipesRouter = require("./resources/recipes/router");
+const usersRouter = require("./resources/user/router");
 
 app.disable("x-powered-by");
 
@@ -18,6 +19,8 @@ app.use(morgan("dev"));
 
 /* SETUP ROUTES */
 app.use("/recipes", recipesRouter);
+app.use("/users", usersRouter);
+
 app.get("*", (req, res) => {
   res.json({ ok: true });
 });

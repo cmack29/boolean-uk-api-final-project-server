@@ -6,8 +6,6 @@ const morgan = require("morgan");
 
 const app = express();
 
-const userRouter = ("./user/router")
-
 /* SETUP MIDDLEWARE */
 const recipesRouter = require("./resources/recipes/router");
 const usersRouter = require("./resources/user/router");
@@ -18,8 +16,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-
-app.use("/User", userRouter)
 
 /* SETUP ROUTES */
 app.use("/recipes", recipesRouter);

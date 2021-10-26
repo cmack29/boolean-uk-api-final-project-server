@@ -27,4 +27,17 @@ const createUserProfile = async (req, res) => {
     }
 }
 
-module.exports = { createUserProfile }
+const getAll = async (req, res) => {
+    try {
+        const getAllUsers = await prisma.user.findMany()
+
+        res.json({ data: getAllUsers })
+        console.log(getAllUsers)
+    }
+    catch (error) {
+        console.error(error)
+        res.status(500).json({ error })
+    }
+}
+
+module.exports = { createUserProfile, getAll }

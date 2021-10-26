@@ -1,18 +1,18 @@
 const prisma = require("../../utils/database");
 
 const createUserProfile = async (req, res) => {
+  console.log(req.body);
   try {
     const newUser = await prisma.user.create({
       data: {
         userName: req.body.userName,
         email: req.body.email,
-      },
-      profile: {
-        create: [
-          {
-            ...req.body.profile,
+        profile: {
+          create: {
+            firstName: req.body.profile.firstName,
+            lastName: req.body.profile.lastName,
           },
-        ],
+        },
       },
       include: {
         profile: true,

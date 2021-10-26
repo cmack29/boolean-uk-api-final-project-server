@@ -1,8 +1,10 @@
 const express = require("express");
-const router = express.Router()
+const { createUserProfile, deleteUserProfile } = require("./controller");
 
-const { createUserProfile } = require("./controller")
+const router = express.Router();
 
-router.post("/", createUserProfile)
+router.post("/", createUserProfile);
+
+router.delete("/:id", deleteUserProfile);
 
 module.exports = router;

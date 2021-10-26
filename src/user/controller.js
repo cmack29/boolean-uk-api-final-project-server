@@ -27,4 +27,5 @@ const createUserProfile = async (req, res) => {
     }
 }
 
+
 module.exports = {createUserProfile}

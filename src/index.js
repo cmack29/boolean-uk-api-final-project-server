@@ -6,6 +6,8 @@ const morgan = require("morgan")
 
 const app = express()
 
+const userRouter = ("./user/router")
+
 /* SETUP MIDDLEWARE */
 
 app.disable("x-powered-by")
@@ -14,6 +16,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan("dev"))
+
+app.use("/User", userRouter)
 
 /* SETUP ROUTES */
 

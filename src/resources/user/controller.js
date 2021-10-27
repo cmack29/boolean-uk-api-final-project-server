@@ -39,7 +39,6 @@ const getAll = async (req, res) => {
     }
 }
 
-module.exports = { createUserProfile, getAll }
 const deleteUserProfile = async (req, res) => {
     const targetId = parseInt(req.params.id);
 
@@ -60,4 +59,4 @@ const deleteUserProfile = async (req, res) => {
     }
 };
 
-module.exports = { createUserProfile, deleteUserProfile };
+module.exports = { createUserProfile, getAll, deleteUserProfile };

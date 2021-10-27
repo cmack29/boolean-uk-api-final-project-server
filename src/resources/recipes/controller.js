@@ -62,12 +62,15 @@ const updateRecipe = async (req, res) => {
         description: req.body.description,
         prepTime: req.body.prepTime,
         cookingTime: req.body.cookingTime,
+        user: {
+          connect: { id: req.body.userId },
+        },
         ingredients: {
           create: req.body.ingredients
         },
-        where: {
-          id: parseInt(req.params.id)
-        }
+      },
+      where: {
+        id: parseInt(req.params.id)
       }
     })
     res.json({ data: updateRecipe })

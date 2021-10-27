@@ -5,7 +5,7 @@ const getAll = async (req, res) => {
 
   try {
     const data = await prisma.recipe.findMany({
-      include:{
+      include: {
         user: true
       }
     });
@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
 };
 
 const createOneRecipe = async (req, res) => {
-  console.log({ body: req.body});
+  console.log({ body: req.body });
   // const recipeToCreate = {
   //   title,
   //   description,
@@ -40,7 +40,7 @@ const createOneRecipe = async (req, res) => {
           connect: { id: req.body.userId },
         },
         ingredients: {
-          create: req.body.ingredients       
+          create: req.body.ingredients
         },
       },
       include: {
@@ -54,4 +54,27 @@ const createOneRecipe = async (req, res) => {
   }
 };
 
-module.exports = { getAll, createOneRecipe };
+const updateRecipe = async (req, res) => {
+  try {
+    const updateRecipe = await prisma.recipe.update({
+      data: {
+        title: req.body.title,
+        description: req.body.description,
+        prepTime: req.body.prepTime,
+        cookingTime: req.body.cookingTime,
+        ingredients: {
+          create: req.body.ingredients
+        },
+        where: {
+          id: parseInt(req.params.id)
+        }
+      }
+    })
+    res.json({ data: updateRecipe })
+  } catch (error) {
+    console.error(error)
+    res.json({ error })
+  }
+}
+
+module.exports = { getAll, createOneRecipe, updateRecipe };

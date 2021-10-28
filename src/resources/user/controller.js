@@ -1,62 +1,100 @@
 const prisma = require("../../utils/database");
 
 const createUserProfile = async (req, res) => {
-    console.log(req.body);
-    try {
-        const newUser = await prisma.user.create({
-            data: {
-                userName: req.body.userName,
-                email: req.body.email,
-                profile: {
-                    create: {
-                        firstName: req.body.profile.firstName,
-                        lastName: req.body.profile.lastName,
-                    },
-                },
-            },
-            include: {
-                profile: true,
-            },
-        });
-        res.json({ data: newUser });
-        console.log(newUser);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error });
-    }
+  console.log(req.body);
+  try {
+    const newUser = await prisma.user.create({
+      data: {
+        userName: req.body.userName,
+        email: req.body.email,
+        profile: {
+          create: {
+            firstName: req.body.profile.firstName,
+            lastName: req.body.profile.lastName,
+          },
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+    res.json({ data: newUser });
+    console.log(newUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error });
+  }
 };
 
 const getAll = async (req, res) => {
-    try {
-        const getAllUsers = await prisma.user.findMany()
+  try {
+    const getAllUsers = await prisma.user.findMany({
+      include: {
+        profile: true,
+      },
+    });
 
-        res.json({ data: getAllUsers })
-        console.log(getAllUsers)
-    }
-    catch (error) {
-        console.error(error)
-        res.status(500).json({ error })
-    }
-}
-
-const deleteUserProfile = async (req, res) => {
-    const targetId = parseInt(req.params.id);
-
-    try {
-        const deletedProfile = await prisma.profile.delete({
-            where: {
-                userId: targetId,
-            },
-        });
-
-        res.json({
-            message: `Profile of user with id:${targetId} has been deleted successfully!`,
-        });
-    } catch (error) {
-        console.error({ error: error.message });
-
-        res.status(500).json({ error: error.message });
-    }
+    res.json({ data: getAllUsers });
+    console.log(getAllUsers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error });
+  }
 };
 
-module.exports = { createUserProfile, getAll, deleteUserProfile };
+const deleteUserProfile = async (req, res) => {
+  const targetId = parseInt(req.params.id);
+
+  try {
+    const deletedProfile = await prisma.profile.delete({
+      where: {
+        userId: targetId,
+      },
+    });
+
+    res.json({
+      message: `Profile of user with id:${targetId} has been deleted successfully!`,
+    });
+  } catch (error) {
+    console.error({ error: error.message });
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const updateUserProfile = async (req, res) => {
+  console.log({ params: req.params, body: req.body });
+  try {
+    const userProfileToUpdate = await prisma.user.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+        userName: req.body.userName,
+        email: req.body.email,
+        profile: {
+          update: {
+            where: {
+              id: parseInt(req.params.id),
+            },
+            data: {
+              firstName: req.body.profile.firstName,
+              lastName: req.body.profile.lastName,
+            },
+          },          
+        },
+      },
+    });
+    res.json({ data: userProfileToUpdate });
+  } catch (error) {
+    console.error("[ERROR] updateUserProfile: ", { error });
+    res.json({ error });
+  }
+};
+
+module.exports = {
+  createUserProfile,
+  getAll,
+  deleteUserProfile,
+  updateUserProfile,
+};

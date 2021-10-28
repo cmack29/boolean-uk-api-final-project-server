@@ -1,11 +1,18 @@
 const express = require("express");
-const { createUserProfile, getAll, deleteUserProfile } = require("./controller");
+const {
+  createUserProfile,
+  getAll,
+  deleteUserProfile,
+  updateUserProfile,
+} = require("./controller");
 
 const router = express.Router();
 
 router.post("/", createUserProfile);
 
-router.get("/", getAll)
+router.get("/", getAll);
+
+router.put("/:id", updateUserProfile);
 
 router.delete("/:id", deleteUserProfile);
 

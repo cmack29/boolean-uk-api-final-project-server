@@ -62,7 +62,7 @@ const deleteUserProfile = async (req, res) => {
   }
 };
 
-const updateUserProfile = async (req, res) => {
+const updateUser = async (req, res) => {
   console.log({ params: req.params, body: req.body });
   try {
     const userProfileToUpdate = await prisma.user.update({
@@ -72,17 +72,6 @@ const updateUserProfile = async (req, res) => {
       data: {
         userName: req.body.userName,
         email: req.body.email,
-        profile: {
-          update: {
-            where: {
-              id: parseInt(req.params.id),
-            },
-            data: {
-              firstName: req.body.profile.firstName,
-              lastName: req.body.profile.lastName,
-            },
-          },
-        },
       },
     });
     res.json({ data: userProfileToUpdate });
@@ -91,6 +80,25 @@ const updateUserProfile = async (req, res) => {
     res.json({ error });
   }
 };
+
+const updateprofile = async (req, res) => {
+    console.log({ params: req.params, body: req.body });
+    try {
+      const userProfileToUpdate = await prisma.profile.update({
+        where: {
+          id: parseInt(req.params.id),
+        },
+        data: {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+        },
+      });
+      res.json({ data: userProfileToUpdate });
+    } catch (error) {
+      console.error("[ERROR] updateUserProfile: ", { error });
+      res.json({ error });
+    }
+  };
 
 const getUserWithRecipes = async (req, res) => {
   const targetId = parseInt(req.params.id);
@@ -116,6 +124,7 @@ module.exports = {
   createUserProfile,
   getAll,
   deleteUserProfile,
-  updateUserProfile,
+  updateUser,
   getUserWithRecipes,
+  updateprofile
 };

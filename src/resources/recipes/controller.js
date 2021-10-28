@@ -56,15 +56,14 @@ const createOneRecipe = async (req, res) => {
 
 const updateRecipe = async (req, res) => {
   try {
+    console.log(req.params.id)
     const updateRecipe = await prisma.recipe.update({
       data: {
         title: req.body.title,
         description: req.body.description,
         prepTime: req.body.prepTime,
         cookingTime: req.body.cookingTime,
-        user: {
-          connect: { id: req.body.userId },
-        },
+        user: req.body.userId,
         ingredients: {
           create: req.body.ingredients,
         },
@@ -74,6 +73,7 @@ const updateRecipe = async (req, res) => {
       },
     });
     res.json({ data: updateRecipe });
+    console.log({ data: updateRecipe })
   } catch (error) {
     console.error(error);
     res.json({ error });

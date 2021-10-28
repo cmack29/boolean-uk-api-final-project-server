@@ -81,7 +81,7 @@ const updateUserProfile = async (req, res) => {
               firstName: req.body.profile.firstName,
               lastName: req.body.profile.lastName,
             },
-          },          
+          },
         },
       },
     });
@@ -92,9 +92,30 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+const getUserWithRecipes = async (req, res) => {
+  const targetId = parseInt(req.params.id);
+
+  try {
+    const data = await prisma.user.findFirst({
+      where: {
+        id: targetId,
+      },
+      include: {
+        recipes: true,
+      },
+    });
+    res.json(data);
+  } catch (error) {
+    console.error({ error: error.message });
+
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createUserProfile,
   getAll,
   deleteUserProfile,
   updateUserProfile,
+  getUserWithRecipes,
 };

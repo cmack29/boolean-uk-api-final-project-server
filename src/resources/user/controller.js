@@ -48,11 +48,27 @@ const deleteUserProfile = async (req, res) => {
   const targetId = parseInt(req.params.id);
 
   try {
-    const deletedProfile = await prisma.user.delete({
+    const deleteRecipes = prisma.recipe.deleteMany({
+      where: {
+        userId: targetId,
+      },
+    });
+
+    const deleteProfile = prisma.profile.delete({
+      where: {
+        userId: targetId,
+      },
+    });
+
+    const deleteUser = prisma.user.delete({
       where: {
         id: targetId,
       },
     });
+    /*
+     Reference to prisma.$transaction: https://www.prisma.io/docs/guides/performance-and-optimization/prisma-client-transactions-guide#transaction-api
+    */
+    await prisma.$transaction([deleteRecipes, deleteProfile, deleteUser]);
 
     res.json({
       message: `User with id:${targetId} has been deleted successfully!`,

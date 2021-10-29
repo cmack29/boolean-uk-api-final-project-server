@@ -86,9 +86,9 @@ const updateUser = async (req, res) => {
 const updateprofile = async (req, res) => {
   console.log({ params: req.params, body: req.body });
   try {
-    const userProfileToUpdate = await prisma.profile.update({
+    const userProfileToUpdate = await prisma.profile.upsert({
       where: {
-        id: parseInt(req.params.id),
+        UserId: parseInt(req.params.id),
       },
       data: {
         firstName: req.body.firstName,

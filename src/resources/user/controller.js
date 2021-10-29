@@ -1,7 +1,6 @@
 const prisma = require("../../utils/database");
 
 const createUserProfile = async (req, res) => {
-  console.log(req.body);
   try {
     const newUser = await prisma.user.create({
       data: {
@@ -20,7 +19,6 @@ const createUserProfile = async (req, res) => {
       },
     });
     res.json({ data: newUser });
-    console.log(newUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error });
@@ -37,7 +35,6 @@ const getAll = async (req, res) => {
     });
 
     res.json({ data: getAllUsers });
-    console.log(getAllUsers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error });
@@ -81,7 +78,6 @@ const deleteUserProfile = async (req, res) => {
 };
 
 const updateUserProfile = async (req, res) => {
-  console.log({ params: req.params, body: req.body });
   try {
     const updatedProfile = await prisma.profile.upsert({
       where: {
@@ -101,8 +97,6 @@ const updateUserProfile = async (req, res) => {
         },
       },
     });
-
-    console.log("UpdatedProfile: ", updatedProfile);
 
     const userProfileToUpdate = await prisma.user.update({
       where: {

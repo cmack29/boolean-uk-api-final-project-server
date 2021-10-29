@@ -1,8 +1,6 @@
 const prisma = require("../../utils/database");
 
 const getAll = async (req, res) => {
-  console.log({ recipes: prisma.recipe });
-
   try {
     const data = await prisma.recipe.findMany({
       include: {
@@ -18,17 +16,6 @@ const getAll = async (req, res) => {
 };
 
 const createOneRecipe = async (req, res) => {
-  console.log({ body: req.body });
-  // const recipeToCreate = {
-  //   title,
-  //   description,
-  //   prepTime: parseInt(prepTime, 10),
-  //   cookingTime: parseInt(cookingTime, 10),
-  //   userId: 1,
-  //   ingredients:[{
-  //     name: "jon"
-  //   }]
-  // };
   try {
     const newRecipe = await prisma.recipe.create({
       data: {
@@ -56,7 +43,6 @@ const createOneRecipe = async (req, res) => {
 
 const updateRecipe = async (req, res) => {
   try {
-    console.log(req.params.id)
     const updateRecipe = await prisma.recipe.update({
       data: {
         title: req.body.title,
@@ -73,7 +59,6 @@ const updateRecipe = async (req, res) => {
       },
     });
     res.json({ data: updateRecipe });
-    console.log({ data: updateRecipe })
   } catch (error) {
     console.error(error);
     res.json({ error });

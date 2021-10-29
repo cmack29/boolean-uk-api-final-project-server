@@ -16,6 +16,7 @@ const createUserProfile = async (req, res) => {
       },
       include: {
         profile: true,
+        recipes: true,
       },
     });
     res.json({ data: newUser });
@@ -47,14 +48,14 @@ const deleteUserProfile = async (req, res) => {
   const targetId = parseInt(req.params.id);
 
   try {
-    const deletedProfile = await prisma.profile.delete({
+    const deletedProfile = await prisma.user.delete({
       where: {
-        userId: targetId,
+        id: targetId,
       },
     });
 
     res.json({
-      message: `Profile of user with id:${targetId} has been deleted successfully!`,
+      message: `User with id:${targetId} has been deleted successfully!`,
     });
   } catch (error) {
     console.error({ error: error.message });
@@ -83,23 +84,23 @@ const updateUser = async (req, res) => {
 };
 
 const updateprofile = async (req, res) => {
-    console.log({ params: req.params, body: req.body });
-    try {
-      const userProfileToUpdate = await prisma.profile.update({
-        where: {
-          id: parseInt(req.params.id),
-        },
-        data: {
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-        },
-      });
-      res.json({ data: userProfileToUpdate });
-    } catch (error) {
-      console.error("[ERROR] updateUserProfile: ", { error });
-      res.json({ error });
-    }
-  };
+  console.log({ params: req.params, body: req.body });
+  try {
+    const userProfileToUpdate = await prisma.profile.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+      },
+    });
+    res.json({ data: userProfileToUpdate });
+  } catch (error) {
+    console.error("[ERROR] updateUserProfile: ", { error });
+    res.json({ error });
+  }
+};
 
 const getUserWithRecipes = async (req, res) => {
   const targetId = parseInt(req.params.id);
@@ -127,5 +128,5 @@ module.exports = {
   deleteUserProfile,
   updateUser,
   getUserWithRecipes,
-  updateprofile
+  updateprofile,
 };

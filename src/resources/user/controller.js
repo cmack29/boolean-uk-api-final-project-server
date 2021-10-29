@@ -64,9 +64,30 @@ const deleteUserProfile = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUserProfile = async (req, res) => {
   console.log({ params: req.params, body: req.body });
   try {
+    const updatedProfile = await prisma.profile.upsert({
+      where: {
+        userId: parseInt(req.params.id),
+      },
+      update: {
+        firstName: req.body.profile.firstName,
+        lastName: req.body.profile.lastName,
+      },
+      create: {
+        firstName: req.body.profile.firstName,
+        lastName: req.body.profile.lastName,
+        user: {
+          connect: {
+            id: parseInt(req.params.id),
+          },
+        },
+      },
+    });
+
+    console.log("UpdatedProfile: ", updatedProfile);
+
     const userProfileToUpdate = await prisma.user.update({
       where: {
         id: parseInt(req.params.id),
@@ -75,26 +96,12 @@ const updateUser = async (req, res) => {
         userName: req.body.userName,
         email: req.body.email,
       },
+      include: {
+        profile: true,
+        recipes: true,
+      },
     });
-    res.json({ data: userProfileToUpdate });
-  } catch (error) {
-    console.error("[ERROR] updateUserProfile: ", { error });
-    res.json({ error });
-  }
-};
 
-const updateprofile = async (req, res) => {
-  console.log({ params: req.params, body: req.body });
-  try {
-    const userProfileToUpdate = await prisma.profile.update({
-      where: {
-        id: parseInt(req.params.id),
-      },
-      data: {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-      },
-    });
     res.json({ data: userProfileToUpdate });
   } catch (error) {
     console.error("[ERROR] updateUserProfile: ", { error });
@@ -108,7 +115,7 @@ const getUserWithRecipes = async (req, res) => {
   try {
     const data = await prisma.user.findFirst({
       where: {
-        id: targetId,
+        userId: targetId,
       },
       include: {
         recipes: true,
@@ -126,7 +133,6 @@ module.exports = {
   createUserProfile,
   getAll,
   deleteUserProfile,
-  updateUser,
   getUserWithRecipes,
-  updateprofile,
+  updateUserProfile,
 };

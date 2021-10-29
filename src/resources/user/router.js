@@ -3,9 +3,8 @@ const {
   createUserProfile,
   getAll,
   deleteUserProfile,
-  updateUser,
   getUserWithRecipes,
-  updateprofile,
+  updateUserProfile,
 } = require("./controller");
 
 const router = express.Router();
@@ -14,9 +13,7 @@ router.post("/", createUserProfile);
 
 router.get("/", getAll);
 
-router.put("/:id", updateUser);
-
-router.put("/:id", updateprofile);
+router.put("/:id", updateUserProfile);
 
 router.get("/:id", getUserWithRecipes);
 
